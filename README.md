@@ -2,4 +2,4 @@
 
 A GUI application for the Cloudflare WARP CLI on Linux desktop
 
-![screenshot](screenshot/Sreenshot.png)
+![screenshot](screenshot/Screenshot.png)
