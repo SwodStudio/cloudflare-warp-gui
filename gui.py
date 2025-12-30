@@ -86,6 +86,9 @@ class WarpAnimatedToggleGUI(ctk.CTk):
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.after(300, self.get_status)
+        self.after(
+            10000, self.get_status
+        )  # check after 10sec, for who startup both warp and this program (warp connecting tooooo slow and idk how to sync the status, i don't want keep check)
 
     def _show_ip_address_action(self):
         def task():
