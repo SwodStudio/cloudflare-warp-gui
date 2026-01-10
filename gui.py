@@ -91,16 +91,28 @@ class WarpAnimatedToggleGUI(ctk.CTk):
         )  # check after 10sec, for who startup both warp and this program (warp connecting tooooo slow and idk how to sync the status, i don't want keep check)
 
     def _show_ip_address_action(self):
-        def task():
-            self.after(
-                0, lambda: self.ip_address_label.configure(text="IP: Fetching...")
-            )
-            ip_address = get_public_ip()
-            self.after(
-                0, lambda: self.ip_address_label.configure(text=f"IP: {ip_address}")
-            )
-
-        threading.Thread(target=task, daemon=True).start()
+            current_btn_text = self.show_ip_button.cget("text")
+    
+            if current_btn_text == "Hide IP Address":
+                self.ip_address_label.configure(text="IP: N/A")
+                self.show_ip_button.configure(text="Show IP Address")
+                return
+    
+            def task():
+                self.after(0, lambda: self.ip_address_label.configure(text="IP: Fetching..."))
+                
+                try:
+                    ip_address = get_public_ip()
+                except Exception:
+                    ip_address = "Error"
+    
+                def update_ui():
+                    self.ip_address_label.configure(text=f"IP: {ip_address}")
+                    self.show_ip_button.configure(text="Hide IP Address")
+                
+                self.after(0, update_ui)
+    
+            threading.Thread(target=task, daemon=True).start()
 
     def on_closing(self):
         if self.traffic_monitor:
